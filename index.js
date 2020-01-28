@@ -5,9 +5,12 @@ const app = express();
 
 //configurar ejs como view engine
 app.set("view engine","ejs");
+//usar arquivos estaticos
+app.use(express.static("public"));
 
 //rota de teste
 app.get("/", (req,res)=>{
+
     //desenha o arquivo na tela
     res.render("index");
 });
