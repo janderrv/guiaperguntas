@@ -60,6 +60,23 @@ app.post("/salvarpergunta", (req,res)=>{
     });
 });
 
+//rota pergunta por id
+app.get("/pergunta/:id", (req,res)=>{
+    var id = req.params.id;
+    Pergunta.findOne({
+        //busca uma pergunta
+        where: {id: id}
+    }).then(pergunta =>{
+        if(pergunta != undefined){//pergunta encontrada
+            res.render("pergunta",{
+                pergunta: pergunta
+            });
+        }else{//pergunta nao encontrada
+            res.redirect("/");
+        }
+    });
+});
+
 //roda app
 app.listen(8000,()=>{
     console.log("app rodando");
