@@ -16,3 +16,5 @@ const Pergunta = connection.define("pergunta",{
 //nao vai forçar a criação da tabela caso já exista a mesma
 Pergunta.sync({force: false}).then(()=>{
 });
+
+module.exports = Pergunta;

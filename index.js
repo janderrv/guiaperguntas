@@ -7,7 +7,8 @@ const bodyParser = require("body-parser");
 //carrega conexao
 const connection = require("./database/database");
 //importa model pergunta
-const perguntaModel = require("./database/Pergunta");
+const Pergunta = require("./database/Pergunta");
+
 //database
 connection
     .authenticate()
@@ -29,8 +30,14 @@ app.use(bodyParser.json());//ler via json
 
 //rota da pagina inicial
 app.get("/", (req,res)=>{
-    //desenha o arquivo na tela
-    res.render("index");
+    Pergunta.findAll({row: true,order: [
+        ['id','DESC']
+    ]}).then(perguntas => {
+            //desenha o arquivo na tela
+        res.render("index",{
+            perguntas: perguntas
+        });
+    });
 });
 
 //rota da pagina de pergunta
@@ -42,7 +49,15 @@ app.get("/perguntar", (req,res)=>{
 app.post("/salvarpergunta", (req,res)=>{
     var titulo = req.body.titulo;
     var descricao = req.body.descricao;
-    res.send("formulario recebido! titulo: " + titulo + " descricao: " +descricao);
+    //chama o model
+    Pergunta.create({
+        //faz o insert
+        titulo: titulo,
+        descricao: descricao
+    }).then(()=>{
+        //redireciona para pagina inicial
+        res.redirect("/");
+    });
 });
 
 //roda app
